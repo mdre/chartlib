@@ -126,7 +126,7 @@ repositories {
 dependencies {
     compile("com.vaadin:vaadin-core:${vaadinVersion}")
     
-    compile("org.json:json:+")
+    compile("org.json:json:20200518")
 }
 
 
