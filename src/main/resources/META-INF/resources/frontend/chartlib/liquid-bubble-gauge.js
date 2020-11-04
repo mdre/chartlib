@@ -1,6 +1,7 @@
 import { PolymerElement, html } from '@polymer/polymer/polymer-element.js';
 import { ThemableMixin } from '@vaadin/vaadin-themable-mixin/vaadin-themable-mixin.js';
-import * as d3 from "@vaadin/flow-frontend/chartlib/lib/d3.v5.min.js";
+//import * as d3 from "@vaadin/flow-frontend/chartlib/lib/d3.v5.min.js";
+import * as  d3  from 'd3';
 import "@vaadin/flow-frontend/chartlib/liquid-bubble-gauge-css-loader.js";
 
 
@@ -80,7 +81,7 @@ class LiquidBubbleGauge extends ThemableMixin(PolymerElement) {
         this.log("config:",config);
         
         var value = config.liquidLevel;
-        this.log("value: ",value)
+        this.log("value: ",value);
         
         this.log(this.$.liquidbubblesvg);
         var gauge = d3.select(this.$.liquidbubblesvg);

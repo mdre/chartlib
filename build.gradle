@@ -6,8 +6,10 @@ plugins {
     id 'net.researchgate.release' version '2.8.1'
     id 'nu.studer.credentials' version '1.0.7'
     id 'io.codearte.nexus-staging' version '0.21.1'
+//    id "net.java.openjdk.shinyafox.jshell.gradle.plugin" version "1.0.5"
+    id "com.github.mrsarm.jshell.plugin" version "1.0.0"
 }
- 
+
 apply plugin: 'maven'
 apply plugin: 'signing'
  
@@ -30,10 +32,10 @@ idea{
 // desactivo la generación de javadoc en los proyectos que tengan la tarea
 javadoc.enabled = true
 
-println "***************************************************************"
-println "SISTEMA: " + name
-println "VERSION: " + version
-println "***************************************************************"
+//println "***************************************************************"
+//println "SISTEMA: " + name
+//println "VERSION: " + version
+//println "***************************************************************"
 import java.text.SimpleDateFormat
 def getCurrentTimestamp ()
 {
@@ -42,8 +44,19 @@ def getCurrentTimestamp ()
     return df.format (today)
 }
 
-println getCurrentTimestamp()
-println "---------------------------------------------------------------"
+//println getCurrentTimestamp()
+//println "---------------------------------------------------------------"
+
+//-------------------------------------
+// utilidad para para poder usar el jshell
+//https://advancedweb.hu/using-external-libraries-in-jshell/
+task printClasspath {
+   doLast {
+       println sourceSets.main.runtimeClasspath.asPath
+   }
+}
+//-------------------------------------
+
 // incrementar automáticamente el buildNumber
 task autoBuildNumber {
     doFirst {
