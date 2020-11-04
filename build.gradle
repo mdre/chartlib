@@ -221,7 +221,7 @@ task createVaadinDirectoryRelease(type: Zip) {
         File vdManifest = new File(vaadinDistDir+"/META-INF/MANIFEST.MF")
         vdManifest.write("Manifest-Version: 1.0\n")
         vdManifest << "Vaadin-Package-Version: 1\n"
-        vdManifest << "Vaadin-Addon: stickynotes-"+targetVersion+".jar\n"
+        vdManifest << "Vaadin-Addon: chartlib-"+targetVersion+".jar\n"
         vdManifest << "Implementation-Vendor: MarceloDRe \n"
 //        vdManifest << "Implementation-Title: Sticky Notes for Vaadin Flow 14.+\n"
         vdManifest << "Implementation-Title: "+project.title+"\n"
@@ -301,20 +301,20 @@ uploadArchives {
             }
             
             pom.groupId = 'com.github.mdre'
-            pom.artifactId = 'stickynotes'
+            pom.artifactId = 'chartlib'
             
             
             pom.project {
-                name 'Sticky Notes component for Vaadin Flow 14.+'
+                name 'Chart library for Vaadin Flow 14.+'
                 packaging 'jar'
                 // optionally artifactId can be defined here 
-                description 'Sticky Notes for Vaadin Flow 14.+.'
-                url 'https://github.com/mdre/stickynotes'
+                description 'Chart library for Vaadin Flow 14.+'
+                url 'https://github.com/mdre/chartlib'
 
                 scm {
-                    connection 'scm:git:git://github.com/mdre/stickynotes.git'
-                    developerConnection 'scm:git:ssh://github.com/mdre/stickynotes.git'
-                    url 'https://github.com/mdre/stickynotes'
+                    connection 'scm:git:git://github.com/mdre/chartlib.git'
+                    developerConnection 'scm:git:ssh://github.com/mdre/chartlib.git'
+                    url 'https://github.com/mdre/chartlib'
                 }
 
                 licenses {
