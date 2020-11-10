@@ -62,6 +62,11 @@ public class C3Chart extends Component implements HasTheme, HasStyle, HasCompone
         return this.config;
     }
     
+    public C3Chart setConfig(String jsonConfig) {
+        this.config = new JSONObject(jsonConfig);
+        return this;
+    }
+    
     /**
      * Set the chart width
      * @param w the width in pixels
@@ -372,10 +377,12 @@ public class C3Chart extends Component implements HasTheme, HasStyle, HasCompone
     }
     
     
-//    
-//    public C3Chart setAxis(C3Axis a) {
-//        
-//    }
+    
+    public C3Chart setAxis(C3Axis a) {
+        config.put("axis", a.getConfig());
+        return this;
+    }
+    
     
     public C3Chart setGrid(C3Grid g) {
         this.config.put("grid", g.getConfig());
@@ -426,13 +433,18 @@ public class C3Chart extends Component implements HasTheme, HasStyle, HasCompone
 //    public C3Chart setZoom(C3Zoom z) {
 //        
 //    }
-//    
-//    public C3Chart setPoint(C3Point p) {
-//        
-//    }
-//    
-//    public C3Chart setChartType(C3ChartType c) {
-//        
-//    }
+//  
+    /**
+     * Add config parameters for each chart type.
+     * 
+     * @param t one of chart types config.
+     * @return 
+     */
+    public C3Chart setTypeConfig(C3TypeConfig t) {
+        config.put(t.getTypeName(), t.getConfig());
+        return this;
+    }
+    
+    
     
 }

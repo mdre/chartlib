@@ -45,7 +45,7 @@ public class C3GridYLine {
         this.config = new JSONObject();
     }
     
-    public C3GridYLine setValue(float v) {
+    public C3GridYLine setValue(double v) {
         this.config.put("value", v);
         return this;
     }

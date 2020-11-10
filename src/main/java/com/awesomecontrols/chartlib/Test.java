@@ -6,6 +6,8 @@
 
 package com.awesomecontrols.chartlib;
 
+import com.awesomecontrols.chartlib.c3wrapper.C3Axis;
+import com.awesomecontrols.chartlib.c3wrapper.C3Bar;
 import com.awesomecontrols.chartlib.c3wrapper.C3Chart;
 import com.awesomecontrols.chartlib.c3wrapper.C3Data;
 import com.awesomecontrols.chartlib.c3wrapper.C3DataRegion;
@@ -13,7 +15,11 @@ import com.awesomecontrols.chartlib.c3wrapper.C3Grid;
 import com.awesomecontrols.chartlib.c3wrapper.C3GridXLine;
 import com.awesomecontrols.chartlib.c3wrapper.C3GridYLine;
 import com.awesomecontrols.chartlib.c3wrapper.C3Legend;
+import com.awesomecontrols.chartlib.c3wrapper.C3Line;
+import com.awesomecontrols.chartlib.c3wrapper.C3Pie;
+import com.awesomecontrols.chartlib.c3wrapper.C3Point;
 import com.awesomecontrols.chartlib.c3wrapper.C3Region;
+import com.awesomecontrols.chartlib.c3wrapper.C3Tooltip;
 import com.awesomecontrols.chartlib.c3wrapper.C3YAxis;
 import com.awesomecontrols.chartlib.c3wrapper.ILegendItemOnClick;
 import com.awesomecontrols.chartlib.c3wrapper.ILegendItemOnMouseOut;
@@ -54,6 +60,10 @@ public class Test {
                                         .setSelectionDraggable(true)
                                         .setSelectionIsSelectable("function(d){return true;}")
                                         .setStackNormalize(true)
+                                        .setDataTypes(Map.of("data1",C3Data.ChartType.AREASPLINE,
+                                                             "data2",C3Data.ChartType.AREASTEP
+                                                            )
+                                        )
                             )
                             .addRegion(new C3Region().setAxis(C3Region.RegionAxis.x).setEnd(1).setClass("regionX"))
                             .addRegion(new C3Region().setAxis(C3Region.RegionAxis.x).setStart(2).setEnd(4).setClass("regionX"))
@@ -94,7 +104,37 @@ public class Test {
                                                             })
                             
                             )
+                
+                            .setTooltip(new C3Tooltip()
+                                                .formatName("function (name, ratio, id, index) { return name; }")
+                                                .formatTittle("function (x, index) { return 'Data ' + x; }")
+                                                .formatValue(" function (value, ratio, id, index) { return ratio; }")
+                            )
                             
+                
+                            .setTypeConfig(new C3Point()
+                                                .setFocusExpand(true)
+                                                .setRadius(3)
+                                                .setSelectedRadius(5)
+                                    
+                            )
+                
+                            .setTypeConfig(new C3Line().setConnectNull(true).setFocusExpand(C3Line.StepType.STEPAFTER))
+                
+                            .setTypeConfig(new C3Bar().setWidthRatio(0.7f).setZerobased(true))
+                
+                            .setTypeConfig(new C3Pie()
+                                                .setLabelShow(true)
+                                                .setLabelFormat("function (value, ratio, id) { return d3.format('$')(value);}")
+                                                .setLabelThreshold(0.09)
+                                                .setExpand(true)
+                            )
+                
+                            .setAxis(new C3Axis()
+                                        .setXCategories(List.of("cat1","cat2","cat3"))
+                                        .setXTickCentered(true)
+                            )
+                
                              // DON'T FORGET TO ALWAYS CALL TO INITIALIZE AT THE END!!!!
                             .initialize()
                 ;

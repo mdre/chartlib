@@ -28,18 +28,16 @@ class C3Chart extends ThemableMixin(PolymerElement) {
             console.log(...logVal);
         }
     }
-    
+
     constructor() {
         super();
-        this.logEnabled=true;
+        this.logEnabled = true;
     }
-    
+
     static get is() {
         return 'c3-chart';
     }
-    
-    
-    
+
     initialize(conf) {
         this.log("initialize Chart");
         this.log(conf);
@@ -47,20 +45,24 @@ class C3Chart extends ThemableMixin(PolymerElement) {
         this.chartConfig.bindto = this.$.chart;
         this.$.chart.style.width = "" + this.chartConfig.width + "px";
         this.$.chart.style.height = "" + this.chartConfig.height + "px";
-        
+
         // replace reference call
         if (this.chartConfig.oninit) {
             this.log("onInit!!");
-            this.chartConfig.oninit = () => {this.$server.onInitEvent();};
+            this.chartConfig.oninit = () => {
+                this.$server.onInitEvent();
+            };
             this.log(this.chartConfig.oninit);
         }
-        
+
         if (this.chartConfig.onmouseover) {
             this.log("onMouseOver!!");
-            this.chartConfig.onmouseover = () => {this.$server.onMouseOverEvent();};
+            this.chartConfig.onmouseover = () => {
+                this.$server.onMouseOverEvent();
+            };
             this.log(this.chartConfig.onmouseover);
         }
-        
+
         //--------------------------------------------------------
         // Data section
         //--------------------------------------------------------
@@ -68,74 +70,192 @@ class C3Chart extends ThemableMixin(PolymerElement) {
         //--------------------------------------------------------
         if (this.chartConfig.data.onclick) {
             this.log("dataOnClick!!");
-            this.chartConfig.data.onclick = (d,e) => {this.$server.dataOnClickEvent(d);};
+            this.chartConfig.data.onclick = (d, e) => {
+                this.$server.dataOnClickEvent(d);
+            };
         }
-        
+
         if (this.chartConfig.data.onmouseover) {
             this.log("dataOnMouseOver!!");
-            this.chartConfig.data.onmouseover = (d) => {this.$server.dataOnMouseOverEvent(d);};
+            this.chartConfig.data.onmouseover = (d) => {
+                this.$server.dataOnMouseOverEvent(d);
+            };
         }
-        
+
         if (this.chartConfig.data.onmouseout) {
             this.log("dataOnMouseOut!!");
-            this.chartConfig.data.onmouseout = (d) => {this.$server.dataOnMouseOutEvent(d);};
+            this.chartConfig.data.onmouseout = (d) => {
+                this.$server.dataOnMouseOutEvent(d);
+            };
         }
-        
+
         //--------------------------------------------------------
         //      functions
         //--------------------------------------------------------
         if (this.chartConfig.data.isselectable) {
             this.log("isSelectable!!");
-            this.chartConfig.data.isselectable = convertToFunc(this.chartConfig.data.isselectable);
+            this.chartConfig.data.isselectable = parseFunction(this.chartConfig.data.isselectable);
         }
+
+        if (this.chartConfig.data.color) {
+            this.log("color!!");
+            this.chartConfig.data.color = parseFunction(this.chartConfig.data.colors);
+        }
+
 
         //--------------------------------------------------------
         // Legends section
         //--------------------------------------------------------
         //      callbacks
         //--------------------------------------------------------
-        this.log("legend section");
         if (this.chartConfig.legend) {
-            if (this.chartConfig.legend.item.onclick) {
-                this.log("LegendItemOnClick!!");
-                this.chartConfig.legend.item.onclick = (id) => {this.$server.legendItemOnClickEvent(id);};
+            this.log("legend section");
+            if (this.chartConfig.legend.item) {
+                if (this.chartConfig.legend.item.onclick) {
+                    this.log("LegendItemOnClick!!");
+                    this.chartConfig.legend.item.onclick = (id) => {
+                        this.$server.legendItemOnClickEvent(id);
+                    };
+                }
+                if (this.chartConfig.legend.item.onmouseover) {
+                    this.log("legendItemOnMouseOver!!");
+                    this.chartConfig.legend.item.onmouseover = (id) => {
+                        this.$server.legendItemOnMouseOverEvent(id);
+                    };
+                }
+                if (this.chartConfig.legend.item.onmouseout) {
+                    this.log("legendItemOnMouseOut!!");
+                    this.chartConfig.legend.item.onmouseout = (id) => {
+                        this.$server.legendItemOnMouseOutEvent(id);
+                    };
+                }
             }
-            this.log("legend 1");
-            if (this.chartConfig.legend.item.onmouseover) {
-                this.log("legendItemOnMouseOver!!");
-                this.chartConfig.legend.item.onmouseover = (id) => {this.$server.legendItemOnMouseOverEvent(id);};
-            }
-            this.log("legend 2");
+        }
 
-            if (this.chartConfig.legend.item.onmouseout) {
-                this.log("legendItemOnMouseOut!!");
-                this.chartConfig.legend.item.onmouseout = (id) => {this.$server.legendItemOnMouseOutEvent(id);};
+        //--------------------------------------------------------
+        // Tooltip section
+        //--------------------------------------------------------
+        //--------------------------------------------------------
+        //      functions
+        //--------------------------------------------------------
+        if (this.chartConfig.tooltip) {
+            this.log("Tooltip section")
+            if (this.chartConfig.tooltip.format) {
+                if (this.chartConfig.tooltip.format.title) {
+                    this.log("title func: " + this.chartConfig.tooltip.format.title);
+                    this.chartConfig.tooltip.format.title = this.parseFunction(this.chartConfig.tooltip.format.title);
+                    this.log("-----");
+                }
+
+                if (this.chartConfig.tooltip.format.name) {
+                    this.log("name func: " + this.chartConfig.tooltip.format.name);
+                    this.chartConfig.tooltip.format.name = this.parseFunction(this.chartConfig.tooltip.format.name);
+                    this.log("-----");
+                }
+                
+                if (this.chartConfig.tooltip.format.value) {
+                    this.log("name func: " + this.chartConfig.tooltip.format.value);
+                    this.chartConfig.tooltip.format.value = this.parseFunction(this.chartConfig.tooltip.format.value);
+                    this.log("-----");
+                }
             }
-            this.log("legend 3");
+            
+            if (this.chartConfig.tooltip.position) {
+                this.chartConfig.tooltip.position = this.parseFunction(this.chartConfig.tooltip.position);
+            }
+            
+            if (this.chartConfig.tooltip.contents) {
+                this.chartConfig.tooltip.contents = this.parseFunction(this.chartConfig.tooltip.contents);
+            }
+        }
+
+
+
+        //--------------------------------------------------------
+        // Axis section
+        //--------------------------------------------------------
+        if (this.chartConfig.axis) {
+            this.log("Axis section");
+            try {
+                if (this.chartConfig.axis.x.tick.format) {
+                    this.chartConfig.axis.x.tick.format = this.parseFunction(this.chartConfig.axis.x.tick.format);
+                }
+                
+            } catch(e){}
+            
+            try {
+                if (this.chartConfig.axis.y.tick.format) {
+                    this.chartConfig.axis.y.tick.format = this.parseFunction(this.chartConfig.axis.y.tick.format);
+                }
+                
+            } catch(e){}
+            
+            try {
+                if (this.chartConfig.axis.y2.tick.format) {
+                    this.chartConfig.axis.y2.tick.format = this.parseFunction(this.chartConfig.axis.y2.tick.format);
+                }
+                
+            } catch(e){}
         }
         
-        //--------------------------------------------------------
         
+        //--------------------------------------------------------
+        // Charts types section
+        //--------------------------------------------------------
+        if (this.chartConfig.pie) {
+            this.log("pie config section");
+            try {
+                if (this.chartConfig.pie.label.format) {
+                    this.log("pie label format");
+                    this.pieLabelFormat = this.parseFunction(this.chartConfig.pie.label.format);
+                    this.chartConfig.pie.label.format = (value, ratio, id) => { return this.pieLabelFormat(value, ratio, id);};
+                    this.log("----------------");
+                }
+            } catch(e) {}
+            this.log("----------- end pie section -----------");
+        }
+
+
+        
+        if (this.chartConfig.stanford) {
+            this.log("stanford section");
+            if (this.chartConfig.stanford.scaleValues) {
+                this.chartConfig.stanford.scaleValues = this.parseFunction(this.chartConfig.stanford.scaleValues);
+            }
+                
+            if (this.chartConfig.stanford.colors) {
+                //this.chartConfig.stanford.colors = this.parseFunction(this.chartConfig.stanford.colors);
+            }
+            
+        }
+        //--------------------------------------------------------
+
         this.log("post-transform chart config");
         this.log(this.chartConfig);
-        
+
         var chart = c3.generate(this.chartConfig);
-                    
+
         this.log("---- FIN INITIALIZE ----");
     }
-  
+
     // convert a String to a Javascript function
-    convertToFunc(funcText) {
-        var f = JSON.parse(funcText, function (key, value) {
-                            if (value && (typeof value === 'string') && value.indexOf("function") === 0) {
-                                // we can only pass a function as string in JSON ==> doing a real function
-                                var jsFunc = new Function('return ' + value)();
-                                return jsFunc;
-                            }
-                            return value;
-                        });
-        return f;
+    parseFunction(str, name) {
+        var fn_body_idx = str.indexOf('{'),
+            fn_body = str.substring(fn_body_idx + 1, str.lastIndexOf('}')),
+            fn_declare = str.substring(0, fn_body_idx),
+            fn_params = fn_declare.substring(fn_declare.indexOf('(') + 1, fn_declare.lastIndexOf(')')),
+            args = fn_params.split(',');
+
+        args.push(fn_body);
+
+        function Fn() {
+            return Function.apply(this, args);
+        }
+        Fn.prototype = Function.prototype;
+        
+        return new Fn();
     }
-};
+}
+;
 
 customElements.define(C3Chart.is, C3Chart);

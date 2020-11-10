@@ -58,12 +58,12 @@ public class C3Region {
         return this;
     }
     
-    public C3Region setStart(float start) {
+    public C3Region setStart(double start) {
         this.reg.put("start",start);
         return this;
     }
 
-    public C3Region setEnd(float end) {
+    public C3Region setEnd(double end) {
         this.reg.put("end",end);
         return this;
     }

@@ -28,12 +28,12 @@ public class C3DataRegion {
         reg = new JSONObject();
     }
 
-    public C3DataRegion setStart(float start) {
+    public C3DataRegion setStart(double start) {
         this.reg.put("start",start);
         return this;
     }
 
-    public C3DataRegion setEnd(float end) {
+    public C3DataRegion setEnd(double end) {
         this.reg.put("end",end);
         return this;
     }

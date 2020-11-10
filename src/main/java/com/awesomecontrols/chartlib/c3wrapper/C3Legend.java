@@ -134,7 +134,7 @@ public class C3Legend {
      */
     public C3Legend inset(Anchor a, int x, int y, int step) {
         JSONObject i = new JSONObject();
-        i.put("anchor", a);
+        i.put("anchor", a.getType());
         i.put("x", x);
         i.put("y", y);
         i.put("step",step);
@@ -163,7 +163,7 @@ public class C3Legend {
      */
     public C3Legend inset(Anchor a, int x, int y) {
         JSONObject i = new JSONObject();
-        i.put("anchor", a);
+        i.put("anchor", a.getType());
         i.put("x", x);
         i.put("y", y);
         i.put("step","undefined");

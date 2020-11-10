@@ -6,6 +6,7 @@
 package com.awesomecontrols.chartlib.c3wrapper;
 
 import elemental.json.JsonValue;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -121,7 +122,7 @@ public class C3Data {
     }
 
     /**
-     * Load data from a multidimensional array, with each element containing an array consisting of a datum name and associated data values.
+     * Set data from a multidimensional array, with each element containing an array consisting of a datum name and associated data values.
      *
      * Format: 
      * ArrayList<List> data = new ArrayList<>(); 
@@ -138,7 +139,26 @@ public class C3Data {
         this.config.put("columns", columns);
         return this;
     }
+    
+    /**
+     * Load data from a multidimensional array, with each element containing an array 
+     * consisting of a datum name and associated data values.
+     * Ex: addColumnData(List.of('data1', 30, 20, 50, 40, 60, 50))
+     * 
+     * @param values
+     * @return 
+     */
+    public C3Data addColumnData(List values) {
+        JSONArray columns = this.config.optJSONArray("columns");
+        if (columns==null) {
+            columns = new JSONArray();
+        }
+        columns.put(values);
+        this.config.put("columns", columns);
+        return this;
+    }
 
+    
     /**
      * Used if loading JSON via data.url:
      *
@@ -202,6 +222,14 @@ public class C3Data {
         return this;
     }
 
+    
+    public C3Data setEpochs(String e) {
+        this.config.put("epochs", e);
+        return this;
+    }
+
+    
+    
     /**
      * Set custom data name.
      * 
@@ -226,16 +254,21 @@ public class C3Data {
     }
 
     /**
-     * Set groups for the data for stacking.
+     * add groups for the data for stacking.
      *
      * @param groups
      * @return
      */
-    public C3Data setGroups(List<List<String>> groups) {
+    public C3Data addGroup(List<String> group) {
+        JSONArray groups = config.optJSONArray("groups");
+        if (groups==null) {
+            groups = new JSONArray();
+        }
+        groups.put(group);
         this.config.put("groups", groups);
         return this;
     }
-
+    
     /**
      * Set y axis the data related to. y and y2 can be used.
      *
@@ -267,7 +300,10 @@ public class C3Data {
      * @return 
      */
     public C3Data setDataTypes(Map<String,ChartType> types) {
-        this.config.put("types", types);
+        HashMap<String,String> t = new HashMap<>();
+        //transform types to it string value
+        types.forEach((k,v)-> t.put(k, v.getType()));
+        this.config.put("types", t);
         return this;
     }
 

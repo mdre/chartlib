@@ -45,7 +45,7 @@ public class C3GridXLine {
         this.config = new JSONObject();
     }
     
-    public C3GridXLine setValue(float v) {
+    public C3GridXLine setValue(double v) {
         this.config.put("value", v);
         return this;
     }
