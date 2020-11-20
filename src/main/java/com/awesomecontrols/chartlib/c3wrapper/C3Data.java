@@ -33,38 +33,6 @@ public class C3Data {
     private IDataOnMouseOver onMouseOver;
     private IDataOnMouseOut onMouseOut;
 
-    public enum ChartType {
-        LINE("line"),
-        SPLINE("spline"),
-        STEP("step"),
-        AREA("area"),
-        AREASPLINE("area-spline"),
-        AREASTEP("area-step"),
-        BAR("bar"),
-        SCATTER("scatter"),
-        STANFORD("stanford"),
-        PIE("pie"),
-        DONUT("donut"),
-        GAUGE("gauge");
-        
-        String type;
-
-        private ChartType(String type) {
-            this.type = type;
-        }
-        
-        public String getType() {
-            return this.type;
-        }
-
-        @Override
-        public String toString() {
-            return this.type; 
-        }
-        
-        
-    }
-
     public C3Data() {
         this.config = new JSONObject();
     }
@@ -287,7 +255,7 @@ public class C3Data {
      * @param type
      * @return 
      */
-    public C3Data setChartType(ChartType type) {
+    public C3Data setChartType(C3ChartType type) {
         this.config.put("type", type.getType());
         return this;
     }
@@ -299,7 +267,7 @@ public class C3Data {
      * @param types
      * @return 
      */
-    public C3Data setDataTypes(Map<String,ChartType> types) {
+    public C3Data setDataTypes(Map<String,C3ChartType> types) {
         HashMap<String,String> t = new HashMap<>();
         //transform types to it string value
         types.forEach((k,v)-> t.put(k, v.getType()));

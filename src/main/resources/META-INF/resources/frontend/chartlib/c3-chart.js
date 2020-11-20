@@ -233,7 +233,7 @@ class C3Chart extends ThemableMixin(PolymerElement) {
         this.log("post-transform chart config");
         this.log(this.chartConfig);
 
-        var chart = c3.generate(this.chartConfig);
+        this.chart = c3.generate(this.chartConfig);
 
         this.log("---- FIN INITIALIZE ----");
     }
@@ -255,6 +255,93 @@ class C3Chart extends ThemableMixin(PolymerElement) {
         
         return new Fn();
     }
+    
+    //--------------------------------------------------------
+    // API
+    //--------------------------------------------------------
+    focus(sTargetIds) {
+        var targetIds = JSON.parse(sTargetIds);
+        if (targetIds.targets.length>0) {
+            this.chart.focus(targetIds.targets);
+        } else {
+            this.chart.focus();
+        }
+    }
+    
+    defocus(sTargetIds) {
+        var targetIds = JSON.parse(sTargetIds);
+        if (targetIds.targets.length>0) {
+            this.chart.defocus(targetIds.targets);
+        } else {
+            this.chart.defocus();
+        }
+    }
+    
+    revert(sTargetIds) {
+        var targetIds = JSON.parse(sTargetIds);
+        if (targetIds.targets.length>0) {
+            this.chart.revert(targetIds.targets);
+        } else {
+            this.chart.revert();
+        }
+    }
+    
+    show(sTargetIds) {
+        var targetIds = JSON.parse(sTargetIds);
+        this.log(targetIds);
+        if (targetIds.targets.length>0) {
+            if (!(typeof targetIds.withLegend === 'undefined')) {
+               this.chart.show(targetIds.targets, {withLegend: targetIds.withLegend});
+            } else {
+                this.chart.show(targetIds.targets);
+            }
+        } else {
+            this.chart.show();
+        }
+    }
+    
+    hide(sTargetIds) {
+        var targetIds = JSON.parse(sTargetIds);
+        this.log(targetIds);
+        if (targetIds.targets.length>0) {
+            if (!(typeof targetIds.withLegend === 'undefined')) {
+               this.chart.hide(targetIds.targets, {withLegend: targetIds.withLegend});
+            } else {
+                this.chart.hide(targetIds.targets);
+            }
+        } else {
+            this.chart.hide();
+        }
+    }
+    
+    
+    toggle(sTargetIds) {
+        var targetIds = JSON.parse(sTargetIds);
+        this.log(targetIds);
+        if (targetIds.targets.length>0) {
+            if (!(typeof targetIds.withLegend === 'undefined')) {
+               this.chart.toggle(targetIds.targets, {withLegend: targetIds.withLegend});
+            } else {
+                this.chart.toggle(targetIds.targets);
+            }
+        } else {
+            this.chart.toggle();
+        }
+    }
+    
+    load(dataset) {
+        var ds = JSON.parse(dataset);
+        this.log(ds);
+        this.chart.load(ds);
+    }
+    
+    unload(ids) {
+        var tIds = JSON.parse(ids);
+        this.log(tIds);
+        this.chart.unload(tIds);
+    }
+    
+    
 }
 ;
 

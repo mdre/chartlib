@@ -9,6 +9,7 @@ package com.awesomecontrols.chartlib;
 import com.awesomecontrols.chartlib.c3wrapper.C3Axis;
 import com.awesomecontrols.chartlib.c3wrapper.C3Bar;
 import com.awesomecontrols.chartlib.c3wrapper.C3Chart;
+import com.awesomecontrols.chartlib.c3wrapper.C3ChartType;
 import com.awesomecontrols.chartlib.c3wrapper.C3Data;
 import com.awesomecontrols.chartlib.c3wrapper.C3DataRegion;
 import com.awesomecontrols.chartlib.c3wrapper.C3Grid;
@@ -16,6 +17,8 @@ import com.awesomecontrols.chartlib.c3wrapper.C3GridXLine;
 import com.awesomecontrols.chartlib.c3wrapper.C3GridYLine;
 import com.awesomecontrols.chartlib.c3wrapper.C3Legend;
 import com.awesomecontrols.chartlib.c3wrapper.C3Line;
+import com.awesomecontrols.chartlib.c3wrapper.C3LoadColumn;
+import com.awesomecontrols.chartlib.c3wrapper.C3LoadRow;
 import com.awesomecontrols.chartlib.c3wrapper.C3Pie;
 import com.awesomecontrols.chartlib.c3wrapper.C3Point;
 import com.awesomecontrols.chartlib.c3wrapper.C3Region;
@@ -43,7 +46,13 @@ public class Test {
     }
     
     public static void main(String[] args) {
-        
+        Test test = new Test();
+//        test.testChart();
+//        test.testRow();
+        test.testColumn();
+    }
+    
+    public void testChart() {
         C3Chart c3chart = new C3Chart()
                             .setData(new C3Data()
                                         .addRegion("data1", new C3DataRegion().setStart(1).setEnd(2).setStyle("dashed"))
@@ -60,8 +69,8 @@ public class Test {
                                         .setSelectionDraggable(true)
                                         .setSelectionIsSelectable("function(d){return true;}")
                                         .setStackNormalize(true)
-                                        .setDataTypes(Map.of("data1",C3Data.ChartType.AREASPLINE,
-                                                             "data2",C3Data.ChartType.AREASTEP
+                                        .setDataTypes(Map.of("data1",C3ChartType.AREASPLINE,
+                                                             "data2",C3ChartType.AREASTEP
                                                             )
                                         )
                             )
@@ -141,5 +150,28 @@ public class Test {
         
         System.out.println(c3chart.getConfig().toString(4));
         
+    }
+    
+    public void testRow() {
+        C3LoadRow r = new C3LoadRow("data1","data2","data3")
+                                .addRow(90, 120, 300)
+                                .addRow(40, 160, 240)
+                                .setChartType(C3ChartType.BAR)
+                                .unload("data4");
+        
+        List d = List.of(List.of(90, 120, 300),List.of(40, 160, 240));
+        r = new C3LoadRow("data1","data2","data3").addRows(d);
+        
+        System.out.println(r.getConfig().toString(4));
+    }
+    
+    public void testColumn() {
+        C3LoadColumn c = new C3LoadColumn()
+                            .addColumn("data1", 130, 120, 150, 140, 160, 150)
+                            .addColumn("data4", List.of(30, 20, 50, 40, 60, 50))
+                            .setChartType(C3ChartType.BAR)
+                            .unload("data4")
+                ;
+        System.out.println(c.getConfig().toString(4));
     }
 }
