@@ -16,20 +16,20 @@ import org.json.JSONArray;
  *
  * @author Marcelo D. Ré {@literal <marcelo.re@gmail.com>}
  */
-public class C3LoadColumn extends C3Dataset {
-    private final static Logger LOGGER = Logger.getLogger(C3LoadColumn.class .getName());
+public class C3Column extends C3BaseData {
+    private final static Logger LOGGER = Logger.getLogger(C3Column.class .getName());
     static {
         if (LOGGER.getLevel() == null) {
             LOGGER.setLevel(Level.INFO);
         }
     }
 
-    public C3LoadColumn() {
+    public C3Column() {
         super("columns");
         config.put("columns", new JSONArray());
     }
     
-    public C3LoadColumn addColumn(String id, Number... values) {
+    public C3Column addColumn(String id, Number... values) {
         JSONArray rows = config.optJSONArray("columns");
         ArrayList d = new ArrayList();
         d.add(id);
@@ -40,7 +40,7 @@ public class C3LoadColumn extends C3Dataset {
         return this;
     }
     
-    public C3LoadColumn addColumn(String id, List<Number> values) {
+    public C3Column addColumn(String id, List<Number> values) {
         JSONArray rows = config.optJSONArray("columns");
         ArrayList d = new ArrayList();
         d.add(id);
@@ -51,14 +51,4 @@ public class C3LoadColumn extends C3Dataset {
         return this;
     }
     
-    public C3LoadColumn setChartType(C3ChartType chartType) {
-        config.put("type", chartType.getType());
-        return this;
-    }
-    
-    public C3LoadColumn unload(String... ids) {
-        
-        config.put("unload", List.of(ids));
-        return this;
-    }
 }

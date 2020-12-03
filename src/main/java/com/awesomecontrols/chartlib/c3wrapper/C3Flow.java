@@ -6,7 +6,6 @@
 
 package com.awesomecontrols.chartlib.c3wrapper;
 
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,27 +13,39 @@ import java.util.logging.Logger;
  *
  * @author Marcelo D. Ré {@literal <marcelo.re@gmail.com>}
  */
-public class C3LoadUrl extends C3Dataset {
-    private final static Logger LOGGER = Logger.getLogger(C3LoadUrl.class .getName());
+public class C3Flow extends C3BaseData {
+    private final static Logger LOGGER = Logger.getLogger(C3Flow.class .getName());
     static {
         if (LOGGER.getLevel() == null) {
             LOGGER.setLevel(Level.INFO);
         }
     }
 
-    public C3LoadUrl(String url) {
+    public C3Flow(C3Column c) {
+        config.put("columns", c.getConfig());
+    }
+    
+    public C3Flow(C3Row r) {
+        config.put("rows", r.getConfig());
+    }
+    
+    public C3Flow(String url) {
         super("url");
         config.put("url", url);
     }
     
-    public C3LoadUrl setChartType(C3ChartType chartType) {
-        config.put("type", chartType.getType());
+    public C3Flow setLength(int l) {
+        config.put("length", l);
         return this;
     }
     
-    public C3LoadUrl unload(String... ids) {
-        
-        config.put("unload", List.of(ids));
+    public C3Flow setDuration(int duration) {
+        config.put("duration", duration);
+        return this;
+    }
+    
+    public C3Flow setTo(String to) {
+        config.put("to", to);
         return this;
     }
 }

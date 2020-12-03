@@ -15,8 +15,8 @@ import org.json.JSONArray;
  *
  * @author Marcelo D. Ré {@literal <marcelo.re@gmail.com>}
  */
-public class C3LoadRow extends C3Dataset {
-    private final static Logger LOGGER = Logger.getLogger(C3LoadRow.class .getName());
+public class C3Row extends C3BaseData {
+    private final static Logger LOGGER = Logger.getLogger(C3Row.class .getName());
     static {
         if (LOGGER.getLevel() == null) {
             LOGGER.setLevel(Level.INFO);
@@ -27,12 +27,12 @@ public class C3LoadRow extends C3Dataset {
      * Create a row dataset.
      * @param headers the header of each column
      */
-    public C3LoadRow(String... headers) {
-        super("row");
+    public C3Row(String... headers) {
+        super("rows");
         this.config.put("rows", List.of(List.of(headers)));
     }
     
-    public C3LoadRow addRow(Number... values) {
+    public C3Row addRow(Number... values) {
         JSONArray rows = config.optJSONArray("rows");
         rows.put(List.of(values));
         config.put("rows", rows);
@@ -40,7 +40,7 @@ public class C3LoadRow extends C3Dataset {
         return this;
     }
     
-    public C3LoadRow addRows(List<List<Number>> values) {
+    public C3Row addRows(List<List<Number>> values) {
         List rows = config.optJSONArray("rows").toList();
         rows.addAll(values);
         config.put("rows", rows);
@@ -48,15 +48,4 @@ public class C3LoadRow extends C3Dataset {
         return this;
     }
     
-    
-    public C3LoadRow setChartType(C3ChartType chartType) {
-        config.put("type", chartType.getType());
-        return this;
-    }
-    
-    public C3LoadRow unload(String... ids) {
-        
-        config.put("unload", List.of(ids));
-        return this;
-    }
 }

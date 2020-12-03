@@ -6,10 +6,9 @@
 package com.awesomecontrols.chartlib.c3wrapper;
 
 /**
- *
+ * C3 Chart types
  * @author Marcelo D. Ré {@literal <marcelo.re@gmail.com>}
  */
-
 public enum C3ChartType {
     LINE("line"),
     SPLINE("spline"),

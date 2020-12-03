@@ -10,6 +10,7 @@ import com.awesomecontrols.chartlib.c3wrapper.C3Axis;
 import com.awesomecontrols.chartlib.c3wrapper.C3Bar;
 import com.awesomecontrols.chartlib.c3wrapper.C3Chart;
 import com.awesomecontrols.chartlib.c3wrapper.C3ChartType;
+import com.awesomecontrols.chartlib.c3wrapper.C3Column;
 import com.awesomecontrols.chartlib.c3wrapper.C3Data;
 import com.awesomecontrols.chartlib.c3wrapper.C3DataRegion;
 import com.awesomecontrols.chartlib.c3wrapper.C3Grid;
@@ -17,11 +18,11 @@ import com.awesomecontrols.chartlib.c3wrapper.C3GridXLine;
 import com.awesomecontrols.chartlib.c3wrapper.C3GridYLine;
 import com.awesomecontrols.chartlib.c3wrapper.C3Legend;
 import com.awesomecontrols.chartlib.c3wrapper.C3Line;
-import com.awesomecontrols.chartlib.c3wrapper.C3LoadColumn;
-import com.awesomecontrols.chartlib.c3wrapper.C3LoadRow;
+import com.awesomecontrols.chartlib.c3wrapper.C3Load;
 import com.awesomecontrols.chartlib.c3wrapper.C3Pie;
 import com.awesomecontrols.chartlib.c3wrapper.C3Point;
 import com.awesomecontrols.chartlib.c3wrapper.C3Region;
+import com.awesomecontrols.chartlib.c3wrapper.C3Row;
 import com.awesomecontrols.chartlib.c3wrapper.C3Tooltip;
 import com.awesomecontrols.chartlib.c3wrapper.C3YAxis;
 import com.awesomecontrols.chartlib.c3wrapper.ILegendItemOnClick;
@@ -48,8 +49,8 @@ public class Test {
     public static void main(String[] args) {
         Test test = new Test();
 //        test.testChart();
-//        test.testRow();
-        test.testColumn();
+        test.testRow();
+//        test.testColumn();
     }
     
     public void testChart() {
@@ -153,25 +154,27 @@ public class Test {
     }
     
     public void testRow() {
-        C3LoadRow r = new C3LoadRow("data1","data2","data3")
+        C3Load r = new C3Load(new C3Row("data1","data2","data3")
                                 .addRow(90, 120, 300)
-                                .addRow(40, 160, 240)
+                                .addRow(40, 160, 240))
                                 .setChartType(C3ChartType.BAR)
                                 .unload("data4");
-        
+        System.out.println(r.getJSONConfig().toString(4));
         List d = List.of(List.of(90, 120, 300),List.of(40, 160, 240));
-        r = new C3LoadRow("data1","data2","data3").addRows(d);
         
-        System.out.println(r.getConfig().toString(4));
+        r = new C3Load(new C3Row("data1","data2","data3").addRows(d));
+        
+        System.out.println(r.getJSONConfig().toString(4));
     }
     
     public void testColumn() {
-        C3LoadColumn c = new C3LoadColumn()
-                            .addColumn("data1", 130, 120, 150, 140, 160, 150)
-                            .addColumn("data4", List.of(30, 20, 50, 40, 60, 50))
+        C3Load c = new C3Load(new C3Column()
+                                    .addColumn("data1", 130, 120, 150, 140, 160, 150)
+                                    .addColumn("data4", List.of(30, 20, 50, 40, 60, 50))
+                            )
                             .setChartType(C3ChartType.BAR)
                             .unload("data4")
                 ;
-        System.out.println(c.getConfig().toString(4));
+        System.out.println(c.getJSONConfig().toString(4));
     }
 }

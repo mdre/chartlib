@@ -789,17 +789,230 @@ public class C3Chart extends Component implements HasTheme, HasStyle, HasCompone
         this.toggle(List.of());
         return this;
     }
-    
-    public C3Chart load(C3Dataset dataset) {
+
+    public C3Chart load(C3Load load) {
         LOGGER.log(Level.FINEST, "load");
-        getElement().callJsFunction("load", dataset.getConfig().toString());
+        getElement().callJsFunction("load", load.getJSONConfig().toString());
         return this;
     }
-    
+
     public C3Chart unload(List<String> ids) {
         JSONObject ul = new JSONObject();
         ul.put("ids", ids);
         getElement().callJsFunction("unload", ul.toString());
         return this;
     }
+
+    public C3Chart flow(C3BaseData dataset) {
+        LOGGER.log(Level.FINEST, "load");
+        getElement().callJsFunction("load", dataset.getJSONConfig().toString());
+        return this;
+    }
+
+    /**
+     * Change data point state to selected.
+     *
+     * By this API, you can select data points. To use this API, data.selection.enabled needs to be set true.
+     * Arguments:
+     *
+     * .select(ids, indices, resetOthers)
+     *
+     * ids:
+     * Specify target ids to be selected. If this argument is not given, all targets will be the candidate.
+     *
+     * indices
+     * Specify indices to be selected. If this argument is not given, all data points will be the candidate.
+     *
+     * resetOthers boolean
+     *
+     * If this argument is set true, the data points that are not specified by ids, indices will be unselected.
+     *
+     * @param ids Specify target ids to be selected. If this argument is not given, all targets will be the candidate.
+     * @param idx Specify indices to be selected. If this argument is not given, all data points will be the candidate.
+     * @param resetOthers If this argument is set true, the data points that are not specified by ids, indices will be unselected.
+     *
+     * @return
+     */
+    public C3Chart select(List<String> ids, List<Integer> idx) {
+        JSONObject param = new JSONObject();
+        if (ids != null) {
+            param.put("ids", ids);
+        }
+        if (idx != null) {
+            param.put("idx", idx);
+        }
+        getElement().callJsFunction("select ", param.toString());
+        return this;
+    }
+
+    public C3Chart select(List<String> ids, List<Integer> idx, boolean resetOthers) {
+        JSONObject param = new JSONObject();
+        if (ids != null) {
+            param.put("ids", ids);
+        }
+        if (idx != null) {
+            param.put("idx", idx);
+        }
+        param.put("resetOthers", resetOthers);
+        getElement().callJsFunction("select ", param.toString());
+        return this;
+    }
+
+    /**
+     * Change data point state to unselected.
+     *
+     * By this API, you can unselect data points. To use this API, data.selection.enabled needs to be set true.
+     * Arguments:
+     *
+     * .unselect(ids, indices)
+     *
+     * ids Array
+     *
+     * Specify target ids to be unselected. If this argument is not given, all targets will be the candidate.
+     *
+     * indices Array
+     *
+     * Specify indices to be unselected. If this argument is not given, all data points will be the candidate.
+     * Example:
+     *
+     * // all data points of data1 will be unselected.
+     * chart.unselect(list.of("data1"));
+     *
+     * // 3 data points on index 1, 3, 5 of data1 will be unselected.
+     * chart.unselect(list.of("data1"), list.of(1,3,5));
+     *
+     *
+     * @param ids Specify target ids to be unselected. If this argument is not given, all targets will be the candidate.
+     * @param idx Specify indices to be unselected. If this argument is not given, all data points will be the candidate.
+     *
+     * @return
+     */
+    public C3Chart unselect(List<String> ids, List<Integer> idx) {
+        JSONObject param = new JSONObject();
+        if (ids != null) {
+            param.put("ids", ids);
+        }
+        if (idx != null) {
+            param.put("idx", idx);
+        }
+        getElement().callJsFunction("unselect", param.toString());
+        return this;
+    }
+
+    ISelected selected;
+
+    /**
+     * See selected(targetId)
+     *
+     * @param selected
+     *
+     * @return
+     */
+    public C3Chart selected(ISelected selected) {
+        this.selected = selected;
+        getElement().callJsFunction("selected");
+        return this;
+    }
+
+    /**
+     * Get selected data points.
+     *
+     * By this API, you can get selected data points information. To use this API, data.selection.enabled needs to be set true.
+     * Arguments:
+     *
+     * .selected(targetId)
+     *
+     * targetId String
+     *
+     * You can filter the result by giving target id that you want to get. If not given, all of data points will be returned.
+     * Example:
+     *
+     * // all selected data points will be returned.
+     * chart.selected();
+     *
+     * // all selected data points of data1 will be returned.
+     * chart.selected("data1");
+     *
+     *
+     * @param id
+     * @param selected
+     *
+     * @return
+     */
+    public C3Chart selected(String id, ISelected selected) {
+        this.selected = selected;
+
+        getElement().callJsFunction("selected", id);
+        return this;
+    }
+
+    @ClientCallable
+    private void selectedCallback(JsonValue result) {
+        this.selected.selected(result);
+    }
+
+    /**
+     * Change the type of the chart.
+     * Arguments:
+     *
+     * .transform(type, targetIds)
+     *
+     * type String
+     *
+     * Specify the type to be transformed. The types listed in data.type can be used.
+     *
+     * targetIds String or Array
+     *
+     * Specify targets to be transformed. If not given, all targets will be the candidate.
+     * Example:
+     *
+     * // all targets will be bar chart.
+     * chart.transform("bar",null);
+     *
+     * // only data1 will be bar chart.
+     * chart.transform("bar", List.of("data1"));
+     *
+     * // only data1 and data2 will be bar chart.
+     * chart.transform("bar", List.of("data1", "data2"));
+     *
+     *
+     * @param type
+     * @param targetIds
+     *
+     * @return
+     */
+    public C3Chart transform(C3ChartType type, List<String> targetIds) {
+        JSONObject param = new JSONObject();
+        param.put("type", type.getType());
+        if (targetIds != null) {
+            param.put("ids", targetIds);
+        }
+        getElement().callJsFunction("transform", param.toString());
+        return this;
+    }
+
+    /**
+     * Update groups for the targets.Arguments:
+     *
+     * .groups(groups)
+     *
+     * groups Array
+     *
+     * This argument needs to be an Array that includes one or more Array that includes target ids to be grouped.
+     * Example:
+     *
+     * // data1 and data2 will be a new group.
+     * chart.groups(List.of(List.of("data1", "data2")));
+     *
+     * @param groups This argument needs to be an Array that includes one or more Array that includes target ids to be grouped.
+     *
+     * @return
+     */
+    public C3Chart group(List<List<String>> groups) {
+        JSONObject param = new JSONObject();
+        param.put("groups", groups);
+        getElement().callJsFunction("groups", param.toString());
+        return this;
+    }
+
 }

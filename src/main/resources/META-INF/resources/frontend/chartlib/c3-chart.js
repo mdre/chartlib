@@ -341,7 +341,82 @@ class C3Chart extends ThemableMixin(PolymerElement) {
         this.chart.unload(tIds);
     }
     
+    flow(dataset) {
+        var ds = JSON.parse(dataset);
+        this.log(ds);
+        this.chart.flow(ds);
+    }
     
+    select(param) {
+        var p = JSON.parse(param);
+        this.log(p);
+        this.log(""+(p.ids));
+        this.log(p.resetOthers);
+        if (p.ids && p.idx && p.resetOthers) {
+            this.log("ids+idx+ro");
+            this.chart.select(p.ids,p.idx,p.resetOthers);
+        } else if (p.ids && p.idx) {
+            this.log("ids+idx");
+            this.chart.select(p.ids, p.idx);
+        } else if (p.ids) {
+            this.log("ids");
+            this.chart.select(p.ids);
+        } else if (p.idx) {
+            this.log("idx");
+            this.chart.select(p.idx);
+        }
+        this.log("end select");
+    }
+    
+    unselect(param) {
+        var p = JSON.parse(param);
+        this.log(p);
+        this.log(""+(p.ids));
+        this.log(p.resetOthers);
+        if (p.ids && p.idx) {
+            this.log("ids+idx");
+            this.chart.unselect(p.ids, p.idx);
+        } else if (p.ids) {
+            this.log("ids");
+            this.chart.unselect(p.ids);
+        } else if (p.idx) {
+            this.log("idx");
+            this.chart.unselect(p.idx);
+        }
+        this.log("end select");
+    }
+    
+    selected() {
+        var s = this.chart.select();
+        this.$server.selectedCallback(s);
+    }
+    
+    selected(id) {
+        var s = this.chart.selected(id);
+        this.log(s);
+        this.$server.selectedCallback(s);
+    }
+    
+    
+    transform(param) {
+        var p = JSON.parse(param);
+        this.log("transform",p);
+        if (p.ids) {
+           this.chart.transform(p.type,p.ids);
+        } else {
+            this.chart.transform(p.type);
+        }
+            
+        this.log("end transform");
+    }
+    
+    group(param) {
+        var p = JSON.parse(param);
+        this.log("groups",p);
+        this.chart.groups(p.groups);
+            
+        this.log("end groups");
+    }
 }
 ;
 

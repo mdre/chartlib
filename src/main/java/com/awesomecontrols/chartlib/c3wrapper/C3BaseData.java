@@ -14,8 +14,8 @@ import org.json.JSONObject;
  *
  * @author Marcelo D. Ré {@literal <marcelo.re@gmail.com>}
  */
-public abstract class C3Dataset {
-    private final static Logger LOGGER = Logger.getLogger(C3Dataset.class .getName());
+public abstract class C3BaseData {
+    private final static Logger LOGGER = Logger.getLogger(C3BaseData.class .getName());
     static {
         if (LOGGER.getLevel() == null) {
             LOGGER.setLevel(Level.INFO);
@@ -25,12 +25,20 @@ public abstract class C3Dataset {
     JSONObject config;
     private String dataName;
 
-    public C3Dataset(String dataName) {
+    public C3BaseData() {
+        config = new JSONObject();
+    }
+    
+    public C3BaseData(String dataName) {
         this.dataName = dataName;
         config = new JSONObject();
     }
 
-    public JSONObject getConfig() {
+    public Object getConfig() {
+        return this.config.get(dataName);
+    }
+    
+    public JSONObject getJSONConfig() {
         return this.config;
     }
     
